@@ -54,9 +54,9 @@ mean = ```0*.75 + 1*.2375 + 2*.0125``` = 0.2625
 var = ```0^2*.75 + 1^2*.2375 + 2^2*.0125 -.2625^2``` = 0.2185937
 
 
-And here's the crazy equation for the probability of getting $ {\huge u} $ unique values in a string of length $ {\huge \ell} $ where the alphabet has $ {\huge n} $ letters and where the possible values of $ {\huge u} $ are taken from a set of size $ {\huge k} $ , which itself is a subset of $ {\huge n} $.
+And here's the crazy equation for the probability of getting $ u $ unique values in a string of length $ \ell $ where the alphabet has $ n $ letters and where the possible values of $ u $ are taken from a set of size $ k $ , which itself is a subset of $ n $.
 
-$$ {\LARGE \frac{1}{n^{\ell}} \binom{k}{u} \sum_{i=0}^{\ell - u} \left( (n-k)^i \binom{\ell}{\ell-i} \sum_{j=0}^{u-1} (-1)^j (u-j)^{\ell-i} \binom{u}{j} \right) } $$
+$$ \frac{1}{n^{\ell}} \binom{k}{u} \sum_{i=0}^{\ell - u} \left( (n-k)^i \binom{\ell}{\ell-i} \sum_{j=0}^{u-1} (-1)^j (u-j)^{\ell-i} \binom{u}{j} \right) $$
 
 That was not easy to figure out! I might create a separate pdf for RPubs just to go into descriptive detail about that formula.
 
