@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Games Are Fun</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Games Are Fun">
+  <meta name="author" content="Jason Schadewald">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Games Are Fun</h1>
+    <h2>(And So Is Math)</h2>
+    <p>Jason Schadewald<br/>Remember, this title counts as a slide. :)</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>The Challenge to Overcome</h2>
+  </hgroup>
+  <article data-timings="">
+    <ol>
+<li>You play <a href="www.kingdomofloathing.com">The Kingdom of Loathing</a></li>
+<li>You want a new in-game pet, the <a href="http://kol.coldfront.net/thekolwiki/index.php/Misshapen_Animal_Skeleton">Misshapen Animal Skeleton</a>, to help combat your enemies</li>
+<li>You have some <a href="http://kol.coldfront.net/thekolwiki/index.php/Dusty_pile_of_animal_bones">dusty piles of animal bones</a> and some <a href="http://kol.coldfront.net/thekolwiki/index.php/Dusty_animal_bones">dusty animal bones</a></li>
+<li>&quot;Using&quot; one pile gets you:
+
+<ul>
+<li>75% chance of producing nothing</li>
+<li>23.75% chance of generating one random dusty animal bone</li>
+<li>1.25% chance of generating two random dusty animal bones</li>
+</ul></li>
+<li>You are &quot;not really a math person&quot;</li>
+<li>Oh, and there are a total of 100 distinct bones required for the skeleton</li>
+<li>Most importantly, you want to know how many of these things you need to collect in order to claim your prize.</li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-2" style="background:;">
+  <hgroup>
+    <h2>The Solution</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>I did the math for you! <a href="http://jschadewald.shinyapps.io/KoLStats">http://jschadewald.shinyapps.io/KoLStats</a></p>
+
+<p>See how it&#39;s not normally distributed for small values? The shiny app takes that into account by using a fully accurate discrete calculation when the number of &quot;piles&quot; entered by the user is &lt; 100.  For values &gt;= 100, the normal approximation is used instead.</p>
+
+<pre><code class="r">source(&quot;pitch.R&quot;) #View pitch.R at https://github.com/jschadewald/CourseraPitchProject
+plotPiles(5)
+</code></pre>
+
+<p><img src="assets/fig/modelPiles-1.png" alt="plot of chunk modelPiles"> </p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <h2>More of the Solution</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Also, it&#39;s not Poisson because the mean and variance are not equal.</p>
+
+<p>mean = <code>0*.75 + 1*.2375 + 2*.0125</code> = 0.2625</p>
+
+<p>var = <code>0^2*.75 + 1^2*.2375 + 2^2*.0125 -.2625^2</code> = 0.2185937</p>
+
+<p>And here&#39;s the crazy equation for the probability of getting $ {\huge u} $ unique values in a string of length $ {\huge \ell} $ where the alphabet has $ {\huge n} $ letters and where the possible values of $ {\huge u} $ are taken from a set of size $ {\huge k} $ , which itself is a subset of $ {\huge n} $.</p>
+
+<p>\[ {\LARGE \frac{1}{n^{\ell}} \binom{k}{u} \sum_{i=0}^{\ell - u} \left( (n-k)^i \binom{\ell}{\ell-i} \sum_{j=0}^{u-1} (-1)^j (u-j)^{\ell-i} \binom{u}{j} \right) } \]</p>
+
+<p>That was not easy to figure out! I might create a separate pdf for RPubs just to go into descriptive detail about that formula.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>Future Work</h2>
+  </hgroup>
+  <article data-timings="">
+    <ol>
+<li>Make it run faster</li>
+<li>Combine into a compound probability distribution</li>
+<li>Add more fun, witty comments</li>
+<li>Add a new plot for the &quot;crazy formula&quot; that predicts the number of dusty animal bones you&#39;ll get (i.e. if you have 90, it&#39;ll tell you how many of the remaining 10 you&#39;re likely to get)</li>
+<li>Look into a Gamma or Beta prime distribution model for the crazy formula since the discrete calculation has intermediate terms that are too big for the computer to handle</li>
+<li>Use <a href="http://www.r-bloggers.com/slidify-did-that-and-that-and/">these examples</a> to better understand the value of slidify</li>
+</ol>
+
+<p>Thanks for your time and consideration!</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='The Challenge to Overcome'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='The Solution'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='More of the Solution'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Future Work'>
+         4
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script> -->
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
